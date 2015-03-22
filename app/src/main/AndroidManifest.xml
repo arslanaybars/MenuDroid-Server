@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="aybars.arslan.menudroid_server" >
+    package="aybars.arslan.menudroid_server">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -11,10 +11,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivityServer"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +23,9 @@
         </activity>
 
         <!-- This is the Intent Service -->
-        <service android:name="aybars.arslan.menudroid_server.MyService" android:exported="false" />
+        <service
+            android:name="aybars.arslan.menudroid_server.MyService"
+            android:exported="false" />
 
     </application>
 

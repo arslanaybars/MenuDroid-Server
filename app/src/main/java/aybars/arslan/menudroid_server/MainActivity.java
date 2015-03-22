@@ -128,7 +128,7 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(String s) {
             //After finishing the execution of background task data will be write the text view
             tvClientMsg.setText(s);
-            Log.i("gelen mesaj : ",s);
+            Log.i("message from client : ",s);
         }
     }
 

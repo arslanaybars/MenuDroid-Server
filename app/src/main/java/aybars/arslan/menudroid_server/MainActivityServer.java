@@ -13,7 +13,7 @@ public class MainActivityServer extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_server);
         startService(new Intent(MainActivityServer.this, MyService.class)); //this line enabled the Intent service.
     }
 
@@ -35,5 +35,4 @@ public class MainActivityServer extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    Toast m_currentToast;
 }

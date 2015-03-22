@@ -21,14 +21,15 @@ import java.util.TimerTask;
  * This is a IntentService , it will be running in background , every time was listen to request from client device.
  */
 public class MyService extends IntentService {
-    public final static String EXTRA_PACKAGEFOREGORUND = "paquete";
-    private static boolean estadoServicio = false;
+    public final static String EXTRA_PACKAGEFOREGORUND = "paquete"; // ??
+    private static boolean estadoServicio = false; //??
     private final int SERVER_PORT = 8080; //Define the server port
     private static Timer timer;
     private boolean isPaused = true;
     private SQLiteDatabase dbGlobal;
     private Cursor cursorSearch;
-    private Context c=this;
+    private Context c = this;
+
     public MyService() {
         super("MyService");
     }
@@ -63,7 +64,7 @@ public class MyService extends IntentService {
                             ServerAsyncTask serverAsyncTask = new ServerAsyncTask(c);
                             //Start the AsyncTask execution
                             //Accepted client socket object will pass as the parameter
-                            serverAsyncTask.execute(new Socket[] {socClient});
+                            serverAsyncTask.execute(new Socket[]{socClient});
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
