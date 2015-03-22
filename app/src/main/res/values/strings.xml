@@ -3,4 +3,10 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="table1">1</string>
+    <string name="table2">2</string>
+    <string name="table3">3</string>
+    <string name="table4">4</string>
+    <string name="table5">5</string>
+    <string name="table6">6</string>
 </resources>
