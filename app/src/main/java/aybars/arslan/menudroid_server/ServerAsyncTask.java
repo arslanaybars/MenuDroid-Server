@@ -53,10 +53,12 @@ public class ServerAsyncTask extends AsyncTask<Socket, Void, String> {
         protected void onPostExecute(String s) {
             //After finishing the execution of background task data will be write the text view
             Log.i("CLIENT", "The message from client is: "+s);
-            sqliteoperation = new SqlOperations(mContext);
-            sqliteoperation.open();
-            sqliteoperation.insertRequest(s);
-            //Then add the data to a SqliteDatabase
+            sqliteoperation = new SqlOperations(mContext); //new instantiate SqlOperations, this is our class to do insert,delete,update to the databse.
+            sqliteoperation.open(); //open the Database, (the database is ready to be read or write on it.
+            sqliteoperation.insertRequest(s); /*call the our method insertRequest ,
+            this take the client-request (B-MenuDroidTable1) and split the number table,
+             and the capital letter and save it at database */
+
         }
     }
 

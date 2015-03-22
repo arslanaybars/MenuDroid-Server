@@ -26,9 +26,9 @@ public class SqliteConnection  extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS Restaurant");
+       // db.execSQL("DROP TABLE IF EXISTS Restaurant");
 
-        db.execSQL(sqlCreateTableRestaurant);
+        //db.execSQL(sqlCreateTableRestaurant);
 
     }
 

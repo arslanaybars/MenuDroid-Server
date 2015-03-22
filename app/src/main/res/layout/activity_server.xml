@@ -19,9 +19,10 @@
         android:layout_alignParentTop="true">
 
 
-       <EditText
+       <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
+           android:id="@+id/tvIP"
            android:text="The notification´s  section."
            />
     </LinearLayout>
@@ -48,10 +49,10 @@
                 android:drawableTop="@drawable/main_test"
                 android:padding="@dimen/main_activity_margin_ten"
                 android:textSize="@dimen/main_text_size"
-                android:background="@drawable/main_custom_button_blue"
+                android:background="@drawable/main_custom_button_coffee"
                 android:layout_weight="0.33"
                 android:textColor="@drawable/main_custom_button_text_color"
-                android:id="@+id/btnOrder" />
+                android:id="@+id/btn1" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -60,24 +61,24 @@
                 android:drawableTop="@drawable/main_test"
                 android:padding="@dimen/main_activity_margin_ten"
                 android:textSize="@dimen/main_text_size"
-                android:background="@drawable/main_custom_button_yellow"
+                android:background="@drawable/main_custom_button_coffee"
                 android:layout_weight="0.33"
                 android:layout_marginLeft="5.0dp"
                 android:layout_marginRight="5.0dp"
                 android:textColor="@drawable/main_custom_button_text_color"
-                android:id="@+id/btnBill" />
+                android:id="@+id/btn2" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/main_custom_button_green"
+                android:background="@drawable/main_custom_button_coffee"
                 android:text="@string/table3"
                 android:drawableTop="@drawable/main_test"
                 android:padding="@dimen/main_activity_margin_ten"
                 android:textSize="@dimen/main_text_size"
                 android:layout_weight="0.33"
                 android:textColor="@drawable/main_custom_button_text_color"
-                android:id="@+id/btnWaiter" />
+                android:id="@+id/btn3" />
         </LinearLayout>
 
         <LinearLayout
@@ -98,7 +99,7 @@
                 android:background="@drawable/main_custom_button_coffee"
                 android:layout_weight="0.33"
                 android:textColor="@drawable/main_custom_button_text_color"
-                android:id="@+id/btnMenu" />
+                android:id="@+id/btn4" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -112,7 +113,7 @@
                 android:layout_marginLeft="5.0dp"
                 android:layout_marginRight="5.0dp"
                 android:textColor="@drawable/main_custom_button_text_color"
-                android:id="@+id/btnLogin" />
+                android:id="@+id/btn5" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -124,7 +125,7 @@
                 android:textSize="@dimen/main_text_size"
                 android:layout_weight="0.33"
                 android:textColor="@drawable/main_custom_button_text_color"
-                android:id="@+id/btnRestaurant" />
+                android:id="@+id/btn6" />
 
         </LinearLayout>
     </LinearLayout>

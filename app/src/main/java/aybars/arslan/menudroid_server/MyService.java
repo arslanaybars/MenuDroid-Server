@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -21,15 +22,12 @@ import java.util.TimerTask;
  * This is a IntentService , it will be running in background , every time was listen to request from client device.
  */
 public class MyService extends IntentService {
-    public final static String EXTRA_PACKAGEFOREGORUND = "paquete"; // ??
-    private static boolean estadoServicio = false; //??
     private final int SERVER_PORT = 8080; //Define the server port
     private static Timer timer;
     private boolean isPaused = true;
     private SQLiteDatabase dbGlobal;
     private Cursor cursorSearch;
-    private Context c = this;
-
+    private Context c=this;
     public MyService() {
         super("MyService");
     }
@@ -58,13 +56,14 @@ public class MyService extends IntentService {
                         Socket socClient = null;
                         //Infinite loop will listen for client requests to connect
                         while (true) {
+                            Log.d("SERVICE", "running");
                             //Accept the client connection and hand over communication to server side client socket
                             socClient = socServer.accept();
                             //For each client new instance of AsyncTask will be created
                             ServerAsyncTask serverAsyncTask = new ServerAsyncTask(c);
                             //Start the AsyncTask execution
                             //Accepted client socket object will pass as the parameter
-                            serverAsyncTask.execute(new Socket[]{socClient});
+                            serverAsyncTask.execute(new Socket[] {socClient}); //call the asynctask "serverasynctask"
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -76,13 +75,6 @@ public class MyService extends IntentService {
 
     @Override
     public void onDestroy() {
-        if (cursorSearch != null) {
-            cursorSearch.close();
-        }
-        if (null != dbGlobal) {
-            dbGlobal.close();
-        }
-
         isPaused = false;
         timer.cancel();
         super.onDestroy();
@@ -90,6 +82,8 @@ public class MyService extends IntentService {
 
     @Override
     public int onStartCommand(Intent intenc, int flags, int idArranque) {
+
+        /*The start_sticky is necesarry to retain and recreate the service in case of this was killed.  .*/
         return START_STICKY;
     }
 
@@ -100,12 +94,11 @@ public class MyService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
-
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
+        /*This code it is similar to the START_STICKY s function */
         Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
         restartServiceIntent.setPackage(getPackageName());
         PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
