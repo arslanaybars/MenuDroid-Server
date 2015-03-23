@@ -35,11 +35,15 @@ public class MainActivityServer extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
+
         startService(new Intent(MainActivityServer.this, MyService.class)); //this line enabled the Intent service.
+
         sqliteoperation = new SqlOperations(getApplicationContext());
         sqliteoperation.open();
+
         tvIP= (TextView) findViewById(R.id.tvIP);
-        getDeviceIpAddress(); //your ipaddress method.
+
+        getDeviceIpAddress(); //Ipaddress method.
 
         //Timer with a thread inside to search the status of each table.
         int delay = 100; //is the delay or sleep between every timer loop.
@@ -79,6 +83,7 @@ public class MainActivityServer extends ActionBarActivity {
                                 */
 
                                 final ArrayList<HashMap<String, String>> dictionary = sqliteoperation.getTableStatus();
+
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -118,6 +123,7 @@ public class MainActivityServer extends ActionBarActivity {
                                             if (map.get(KEY_KIND_REQUEST).toString().toUpperCase().equals("B")) {
                                                 /*B- bill = the  color change to yellow*/
                                                 btnTable.setBackgroundResource(R.drawable.main_custom_button_yellow);
+                                                btnTable.setTextColor(R.drawable.main_custom_button_blue);
                                             } else if (map.get(KEY_KIND_REQUEST).toString().toUpperCase().equals("O")) {
                                                 /*O- order = the  color change to blue*/
                                                 btnTable.setBackgroundResource(R.drawable.main_custom_button_blue);
@@ -127,7 +133,8 @@ public class MainActivityServer extends ActionBarActivity {
                                             }
                                             else{
                                                 // If the result is diferrent to B,O,W , the color change to brown
-                                                btnTable.setBackgroundResource(R.drawable.main_custom_button_coffee);
+                                                // TODO I think we dont need to brown button if the table non use so its red
+                                                btnTable.setBackgroundResource(R.drawable.main_custom_button);
                                             }
 
                                         }
