@@ -44,20 +44,46 @@ public class MainActivityServer extends ActionBarActivity {
         tvIP= (TextView) findViewById(R.id.tvIP);
 
         getDeviceIpAddress(); //Ipaddress method.
+        doLoopProcess();
 
-        //Timer with a thread inside to search the status of each table.
-        int delay = 100; //is the delay or sleep between every timer loop.
-        int period = 10000;//ten seconds
-        final Context ctx = this;
-        timer2 = new Timer();
-        timer2.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                Thread thread = new Thread() {
-                    @Override
+
+            }
+
+            public void getDeviceIpAddress() {
+                try {
+                    //Loop through all the network interface devices
+                    for (Enumeration<NetworkInterface> enumeration = NetworkInterface
+                            .getNetworkInterfaces(); enumeration.hasMoreElements(); ) {
+                        NetworkInterface networkInterface = enumeration.nextElement();
+                        //Loop through all the ip addresses of the network interface devices
+                        for (Enumeration<InetAddress> enumerationIpAddr = networkInterface.getInetAddresses(); enumerationIpAddr.hasMoreElements(); ) {
+                            InetAddress inetAddress = enumerationIpAddr.nextElement();
+                            //Filter out loopback address and other irrelevant ip addresses
+                            if (!inetAddress.isLoopbackAddress() && inetAddress.getAddress().length == 4) {
+                                //Print the device ip address in to the text view
+                                tvIP.setText(inetAddress.getHostAddress());
+                            }
+                        }
+                    }
+                } catch (SocketException e) {
+                    Log.e("ERROR:", e.toString());
+                }
+            }
+
+            public void doLoopProcess(){
+                //Timer with a thread inside to search the status of each table.
+                int delay = 100; //is the delay or sleep between every timer loop.
+                int period = 10000;//ten seconds
+                final Context ctx = this;
+                timer2 = new Timer();
+                timer2.scheduleAtFixedRate(new TimerTask() {
                     public void run() {
-                        try {
-                            synchronized (this) {
-                                wait(1000);
+                        Thread thread = new Thread() {
+                            @Override
+                            public void run() {
+                                try {
+                                    synchronized (this) {
+                                        wait(1000);
 
                                 /* call the method getTableStatus from SqlOperations class ,
                                 this method returns an ArrayList<HashMap<String, String>>
@@ -81,97 +107,82 @@ public class MainActivityServer extends ActionBarActivity {
                                   .
                                   ETC
                                 */
-
-                                final ArrayList<HashMap<String, String>> dictionary = sqliteoperation.getTableStatus();
-
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        for (int i = 0; i < dictionary.size(); i++) {
+                                        final ArrayList<HashMap<String, String>> dictionary = sqliteoperation.getTableStatus();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                for (int i = 0; i < dictionary.size(); i++) {
                                             /*I start at index 0 and finish at the penultimate index */
-                                            HashMap<String, String> map = dictionary.get(i); //Get the corresponding map from the index
-
-
-                                            Log.d("DictionaryMAinActivity", map.get(KEY_NUMBER_TABLE) + " --- " +
-                                                    map.get(KEY_KIND_REQUEST) + "------" +
-                                                    map.get(KEY_REQUEST_TEXT)); /*this is a simple log XD, to verify if there is information.*/
-
-                                            // GET the value from number_table key form the actual Map. (this map has "key"-"value
-                                            switch (Integer.parseInt(map.get(KEY_NUMBER_TABLE).toString())) {
-                                                //Depending the number is the table (button) that we get to change the color.
-                                                case 1:
-                                                    btnTable = (Button) findViewById(R.id.btn1);
-                                                    break;
-                                                case 2:
-                                                    btnTable = (Button) findViewById(R.id.btn2);
-                                                break;
-                                                case 3:
-                                                    btnTable = (Button) findViewById(R.id.btn3);
-                                                    break;
-                                                case 4:
-                                                    btnTable = (Button) findViewById(R.id.btn4);
-                                                    break;
-                                                case 5:
-                                                    btnTable = (Button) findViewById(R.id.btn5);
-                                                    break;
-                                                case 6:
-                                                    btnTable = (Button) findViewById(R.id.btn6);
-                                                    break;
-
+                                                    HashMap<String, String> map = dictionary.get(i); //Get the corresponding map from the index
+                                                    Log.d("DictionaryMAinActivity", map.get(KEY_NUMBER_TABLE) + " --- " +
+                                                            map.get(KEY_KIND_REQUEST) + "------" +
+                                                            map.get(KEY_REQUEST_TEXT)); /*this is a simple log XD, to verify if there is information.*/
+                                                    btnTable=chooseTable(Integer.parseInt(map.get(KEY_NUMBER_TABLE).toString()));
+                                                    //get the capital letter from each Map,
+                                                    ChangeColorTable(btnTable,map.get(KEY_KIND_REQUEST).toString().toUpperCase());
+                                                }
                                             }
-                                            //get the capital letter from each Map,
-                                            if (map.get(KEY_KIND_REQUEST).toString().toUpperCase().equals("B")) {
-                                                /*B- bill = the  color change to yellow*/
-                                                btnTable.setBackgroundResource(R.drawable.main_custom_button_yellow);
-                                                btnTable.setTextColor(R.drawable.main_custom_button_blue);
-                                            } else if (map.get(KEY_KIND_REQUEST).toString().toUpperCase().equals("O")) {
-                                                /*O- order = the  color change to blue*/
-                                                btnTable.setBackgroundResource(R.drawable.main_custom_button_blue);
-                                            } else if (map.get(KEY_KIND_REQUEST).toString().toUpperCase().equals("W")) {
-                                                /*W  waiter = the  color change to green  */
-                                                btnTable.setBackgroundResource(R.drawable.main_custom_button_green);
-                                            }
-                                            else{
-                                                // If the result is diferrent to B,O,W , the color change to brown
-                                                // TODO I think we dont need to brown button if the table non use so its red
-                                                btnTable.setBackgroundResource(R.drawable.main_custom_button);
-                                            }
+                                        });
 
-                                        }
                                     }
-                                });
-
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
                             /*Get possible execption*/
-                        }
+                                }
+                            }
+                            ;
+                        };
+                        thread.start();
                     }
-                    ;
-                };
-                thread.start();
-            }
-            }, delay, period);
+                }, delay, period);
             }
 
-            public void getDeviceIpAddress() {
-                try {
-                    //Loop through all the network interface devices
-                    for (Enumeration<NetworkInterface> enumeration = NetworkInterface
-                            .getNetworkInterfaces(); enumeration.hasMoreElements(); ) {
-                        NetworkInterface networkInterface = enumeration.nextElement();
-                        //Loop through all the ip addresses of the network interface devices
-                        for (Enumeration<InetAddress> enumerationIpAddr = networkInterface.getInetAddresses(); enumerationIpAddr.hasMoreElements(); ) {
-                            InetAddress inetAddress = enumerationIpAddr.nextElement();
-                            //Filter out loopback address and other irrelevant ip addresses
-                            if (!inetAddress.isLoopbackAddress() && inetAddress.getAddress().length == 4) {
-                                //Print the device ip address in to the text view
-                                tvIP.setText(inetAddress.getHostAddress());
-                            }
-                        }
-                    }
-                } catch (SocketException e) {
-                    Log.e("ERROR:", e.toString());
+
+            public Button chooseTable(int number){
+                Button btnChooseTable=(Button) findViewById(R.id.btn1);
+                // GET the value from number_table key form the actual Map. (this map has "key"-"value
+                switch (number) {
+                    //Depending the number is the table (button) that we get to change the color.
+                    case 1:
+                        btnChooseTable = (Button) findViewById(R.id.btn1);
+                        break;
+                    case 2:
+                        btnChooseTable = (Button) findViewById(R.id.btn2);
+                        break;
+                    case 3:
+                        btnChooseTable = (Button) findViewById(R.id.btn3);
+                        break;
+                    case 4:
+                        btnChooseTable = (Button) findViewById(R.id.btn4);
+                        break;
+                    case 5:
+                        btnChooseTable = (Button) findViewById(R.id.btn5);
+                        break;
+                    case 6:
+                        btnChooseTable = (Button) findViewById(R.id.btn6);
+                        break;
+
+                }
+                return btnChooseTable;
+            }
+
+            public void ChangeColorTable(Button tableColor, String capitalLetter)
+            {
+                if (capitalLetter.equals("B")) {
+                                                /*B- bill = the  color change to yellow*/
+                    tableColor.setBackgroundResource(R.drawable.main_custom_button_yellow);
+                    tableColor.setTextColor(R.drawable.main_custom_button_blue);
+                } else if (capitalLetter.equals("O")) {
+                                                /*O- order = the  color change to blue*/
+                    tableColor.setBackgroundResource(R.drawable.main_custom_button_blue);
+                } else if (capitalLetter.equals("W")) {
+                                                /*W  waiter = the  color change to green  */
+                    tableColor.setBackgroundResource(R.drawable.main_custom_button_green);
+                }
+                else{
+                    // If the result is diferrent to B,O,W , the color change to brown
+                    // TODO I think we dont need to brown button if the table non use so its red
+                    tableColor.setBackgroundResource(R.drawable.main_custom_button);
                 }
             }
 
