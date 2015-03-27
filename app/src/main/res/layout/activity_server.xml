@@ -84,45 +84,46 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Table 4"
-            android:drawableTop="@drawable/main_test"
-            android:padding="@dimen/main_activity_margin_ten"
-            android:textSize="@dimen/main_text_size"
-            android:background="@drawable/main_custom_button"
-            android:layout_weight="0.33"
-            android:textColor="@drawable/main_custom_button_text_color"
-            android:id="@+id/btn4" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Table 4"
+                android:drawableTop="@drawable/main_test"
+                android:padding="@dimen/main_activity_margin_ten"
+                android:textSize="@dimen/main_text_size"
+                android:background="@drawable/main_custom_button"
+                android:layout_weight="0.33"
+                android:textColor="@drawable/main_custom_button_text_color"
+                android:id="@+id/btn4" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Table 5"
-            android:drawableTop="@drawable/main_test"
-            android:padding="@dimen/main_activity_margin_ten"
-            android:textSize="@dimen/main_text_size"
-            android:background="@drawable/main_custom_button"
-            android:layout_weight="0.33"
-            android:layout_marginLeft="5.0dp"
-            android:layout_marginRight="5.0dp"
-            android:textColor="@drawable/main_custom_button_text_color"
-            android:id="@+id/btn5" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Table 5"
+                android:drawableTop="@drawable/main_test"
+                android:padding="@dimen/main_activity_margin_ten"
+                android:textSize="@dimen/main_text_size"
+                android:background="@drawable/main_custom_button"
+                android:layout_weight="0.33"
+                android:layout_marginLeft="5.0dp"
+                android:layout_marginRight="5.0dp"
+                android:textColor="@drawable/main_custom_button_text_color"
+                android:id="@+id/btn5" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/main_custom_button"
-            android:text="Table 6"
-            android:drawableTop="@drawable/main_test"
-            android:padding="@dimen/main_activity_margin_ten"
-            android:textSize="@dimen/main_text_size"
-            android:layout_weight="0.33"
-            android:textColor="@drawable/main_custom_button_text_color"
-            android:id="@+id/btn6" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/main_custom_button"
+                android:text="Table 6"
+                android:drawableTop="@drawable/main_test"
+                android:padding="@dimen/main_activity_margin_ten"
+                android:textSize="@dimen/main_text_size"
+                android:layout_weight="0.33"
+                android:textColor="@drawable/main_custom_button_text_color"
+                android:id="@+id/btn6" />
 
-    </LinearLayout>
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ll4"
             android:layout_below="@id/ll3"
