@@ -207,6 +207,12 @@ public class MainActivityServer extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+
+        if (id == R.id.action_food) {
+            Intent intentFood = new Intent(MainActivityServer.this, FoodActivity.class);
+            startActivity(intentFood);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
