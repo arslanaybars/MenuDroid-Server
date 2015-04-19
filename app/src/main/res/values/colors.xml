@@ -5,4 +5,9 @@
     <color name="accentColor">#8F90DD</color>
 
     <color name="splashBackground">#c91f12</color>
+
+    <!-- other colors -->
+    <color name="ColorPrimary">#e62117</color>
+    <color name="ColorPrimaryDark">#c31c13</color>
+    <color name="tabsScrollColor">#8a140e</color>
 </resources>

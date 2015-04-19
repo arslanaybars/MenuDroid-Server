@@ -14,6 +14,13 @@ public class SqliteConnection  extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     String sqlCreateTableRestaurant= "CREATE TABLE Restaurant (_id INTEGER PRIMARY KEY, number_table INTEGER, kind_of_request INTEGER, request_text TEXT)";
 
+    /*Add new tables :
+    * Categories
+    * Food
+    * */
+    String sqlCreateTableCategories= "CREATE TABLE Categories (_idCategory INTEGER PRIMARY KEY, category_name TEXT)";
+    String sqlCreateTableFood= "CREATE TABLE Food (_idFood INTEGER PRIMARY KEY, categoryID INTEGER, food_name TEXT)";
+
     public SqliteConnection(Context context) {
         super(context, DATABASE_NAME, null,DATABASE_VERSION);
     }
@@ -21,6 +28,8 @@ public class SqliteConnection  extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(sqlCreateTableRestaurant);
+        db.execSQL(sqlCreateTableCategories);
+        db.execSQL(sqlCreateTableFood);
 
     }
 
