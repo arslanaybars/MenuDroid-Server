@@ -9,4 +9,8 @@
     <string name="table5">5</string>
     <string name="table6">6</string>
 
+
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

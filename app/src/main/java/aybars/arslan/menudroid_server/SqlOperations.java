@@ -42,7 +42,6 @@ public class SqlOperations {
 
     public  ArrayList<HashMap<String,String>>  getTableStatus (){
 
-
         Cursor cursor;
         ArrayList<HashMap<String, String>> allElementsDictionary = new ArrayList<HashMap<String, String>>();
         String select = "SELECT distinct(number_table) ,kind_of_request,request_text FROM Restaurant group by number_table order by _id desc";
@@ -114,6 +113,7 @@ public class SqlOperations {
        * B means Bill
        * O means order
        * W mean Waiter
+       * L mean Login
        * */
        //GET THE REQUEST CHAIN and split the first character and get the table number
        String kind_request=request.substring(0,1);

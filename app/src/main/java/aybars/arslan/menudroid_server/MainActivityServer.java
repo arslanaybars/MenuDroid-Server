@@ -1,6 +1,7 @@
 package aybars.arslan.menudroid_server;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -9,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -27,6 +30,7 @@ public class MainActivityServer extends ActionBarActivity {
     private static final String KEY_NUMBER_TABLE = "number_table";
     private static final String KEY_KIND_REQUEST = "kind_of_request";
     private static final String KEY_REQUEST_TEXT = "request_text";
+    static String TABLE_NAME = "Table Name";
     private Button btnTable;
     private TextView tvIP;
 
@@ -50,6 +54,9 @@ public class MainActivityServer extends ActionBarActivity {
 
     }
 
+    /**
+     * Get ip address of the device
+     */
     public void getDeviceIpAddress() {
         try {
             //Loop through all the network interface devices
@@ -116,6 +123,9 @@ public class MainActivityServer extends ActionBarActivity {
                                             Log.d("DictionaryMAinActivity", map.get(KEY_NUMBER_TABLE) + " --- " +
                                                     map.get(KEY_KIND_REQUEST) + "------" +
                                                     map.get(KEY_REQUEST_TEXT)); /*this is a simple log XD, to verify if there is information.*/
+                                            TABLE_NAME = map.get(KEY_REQUEST_TEXT);
+
+
                                             btnTable = chooseTable(Integer.parseInt(map.get(KEY_NUMBER_TABLE).toString()));
                                             //get the capital letter from each Map,
                                             ChangeColorTable(btnTable, map.get(KEY_KIND_REQUEST).toString().toUpperCase());
@@ -177,11 +187,38 @@ public class MainActivityServer extends ActionBarActivity {
         } else if (capitalLetter.equals("W")) {
                                                 /*W  waiter = the  color change to green  */
             tableColor.setBackgroundResource(R.drawable.main_custom_button_green);
+        } else if (capitalLetter.equals("L")) {
+                                                /*L  login = the  color no change  */
+            tableColor.setBackgroundResource(R.drawable.main_custom_button);
+            showInstantLogin();
         } else {
             // If the result is diferrent to B,O,W , the color change to brown
-            // TODO I think we dont need to brown button if the table non use so its red
+            // TODO I think we dont need to brown button if the table non use so its red -RIGHT
             tableColor.setBackgroundResource(R.drawable.main_custom_button);
+
         }
+    }
+
+    private void showInstantLogin() {
+        AlertDialogWrapper.Builder dialogBuilder = new AlertDialogWrapper.Builder(this);
+        dialogBuilder.setTitle("test");
+        dialogBuilder.setMessage( TABLE_NAME + " is logined");
+
+        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialogBuilder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialogBuilder.create().show();
     }
 
     @Override
