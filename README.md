@@ -1,6 +1,8 @@
 # MenuDroid-Server
 MenuDroid - Android Restaurant Managment Project - Server Side
 
+* [For client application click](https://github.com/arslanaybars/MenuDroid)
+
 This project purpose to develop a open source restaurant management application
 
 - Its our main screen
