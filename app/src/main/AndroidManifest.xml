@@ -20,7 +20,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
         </activity>
@@ -30,30 +30,7 @@
             android:name=".MyService"
             android:exported="false" />
 
-        <!--
-        The documentation about Slidign Tabs you can see at this lin
-        http://www.android4devs.com/2015/01/how-to-make-material-design-sliding-tabs.html
-        -->
 
-        <activity
-            android:name=".FoodActivity"
-            android:label="@string/title_activity_food"
-            android:parentActivityName=".MainActivityServer"
-            android:theme="@style/AppTheme2"
-          >
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="aybars.arslan.menudroid_server.MainActivityServer" />
-
-            <intent-filter>
-
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
     </application>
 
 </manifest>

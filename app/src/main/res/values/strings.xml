@@ -8,8 +8,5 @@
     <string name="table4">4</string>
     <string name="table5">5</string>
     <string name="table6">6</string>
-    <string name="categories">Categories</string>
-    <string name="food">Food</string>
-    <string name="title_activity_food">FoodActivity</string>
 
 </resources>
