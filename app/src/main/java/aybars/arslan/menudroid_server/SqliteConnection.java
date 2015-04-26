@@ -12,6 +12,12 @@ public class SqliteConnection  extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "DroidRestaurant.db";
     public static final String TABLE_NAME = "Restaurant";
     private static final int DATABASE_VERSION = 1;
+    public static final String TABLE_NAME_ORDER = "OrderClient";
+
+
+
+    String sqlCreateTableOrder= "CREATE TABLE OrderClient (_id INTEGER PRIMARY KEY, number_table INTEGER, quantity INTEGER, price TEXT, total TEXT, food_name TEXT)";
+
     String sqlCreateTableRestaurant= "CREATE TABLE Restaurant (_id INTEGER PRIMARY KEY, number_table INTEGER, kind_of_request INTEGER, request_text TEXT)";
 
     /*Add new tables :
@@ -30,6 +36,7 @@ public class SqliteConnection  extends SQLiteOpenHelper {
         db.execSQL(sqlCreateTableRestaurant);
         db.execSQL(sqlCreateTableCategories);
         db.execSQL(sqlCreateTableFood);
+        db.execSQL(sqlCreateTableOrder);
 
     }
 

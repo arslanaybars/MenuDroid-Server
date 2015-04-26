@@ -8,6 +8,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,6 +29,13 @@ public class SqlOperations {
     private static final String KEY_NUMBER_TABLE = "number_table";
     private static final String KEY_KIND_REQUEST = "kind_of_request";
    private static final String KEY_REQUEST_TEXT = "request_text";
+
+
+
+    private static final String KEY_QTY = "quantity";
+    private static final String KEY_FOOD_NAME = "food_name";
+    private static final String KEY_PRICE = "price";
+    private static final String KEY_TOTAL = "total";
 
 
     public SqlOperations(Context context) {
@@ -132,6 +142,30 @@ public class SqlOperations {
        "number : "+number);
 
    }
+    public void insertOrder(JSONArray order,String numberTable) throws JSONException {
+
+        for (int i = 0; i < order.length(); i++) { //Search inner the Categories array
+            String totalByFood = order.getJSONObject(i).getString("totalByFood");
+            String price = order.getJSONObject(i).getString("price");
+            String quantity = order.getJSONObject(i).getString("quantity");
+            String food_name = order.getJSONObject(i).getString("food_name");
+
+            Log.d("TOTAL", "The total by food is " + totalByFood);
+            Log.d("TOTAL", "The price " + price);
+            Log.d("TOTAL", "The qty" + quantity);
+            Log.d("TOTAL", "The food " + food_name);
+            ContentValues row = new ContentValues();
+            row.put(KEY_FOOD_NAME, food_name);
+            row.put(KEY_QTY, Integer.parseInt(quantity));
+            row.put(KEY_PRICE, price);
+            row.put(KEY_NUMBER_TABLE, Integer.parseInt(numberTable));
+            row.put(KEY_TOTAL,totalByFood);
+            database.insert(SqliteConnection.TABLE_NAME_ORDER, null, row); //insert in DB the request
+        }
+
+
+
+    }
 
 
 }
