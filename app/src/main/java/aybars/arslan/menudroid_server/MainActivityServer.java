@@ -35,24 +35,26 @@ public class MainActivityServer extends ActionBarActivity {
     private TextView tvIP;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
 
-
-        startService(new Intent(MainActivityServer.this, MyService.class)); //this line enabled the Intent service.
+        Log.d("SERVICE", "nani");
+        startService(new Intent(MainActivityServer.this, services.MyService.class)); //this line enabled the Intent service.
 
         sqliteoperation = new SqlOperations(getApplicationContext());
         sqliteoperation.open();
-
         tvIP = (TextView) findViewById(R.id.tvIP);
-
         getDeviceIpAddress(); //Ipaddress method.
         doLoopProcess();
 
 
     }
+
+
+
 
     /**
      * Get ip address of the device
