@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import aybars.arslan.menudroid_server.db.SqlOperations;
+import aybars.arslan.menudroid_server.services.MyService;
+
 
 public class MainActivityServer extends ActionBarActivity {
     private static Timer timer2;
@@ -42,7 +45,7 @@ public class MainActivityServer extends ActionBarActivity {
         setContentView(R.layout.activity_server);
 
         Log.d("SERVICE", "nani");
-        startService(new Intent(MainActivityServer.this, services.MyService.class)); //this line enabled the Intent service.
+        startService(new Intent(MainActivityServer.this, MyService.class)); //this line enabled the Intent service.
 
         sqliteoperation = new SqlOperations(getApplicationContext());
         sqliteoperation.open();

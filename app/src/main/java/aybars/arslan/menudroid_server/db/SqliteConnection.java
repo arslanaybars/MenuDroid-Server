@@ -1,4 +1,4 @@
-package aybars.arslan.menudroid_server;
+package aybars.arslan.menudroid_server.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

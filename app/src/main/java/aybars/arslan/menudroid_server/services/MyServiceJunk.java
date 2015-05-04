@@ -1,4 +1,4 @@
-package services;
+package aybars.arslan.menudroid_server.services;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -12,25 +12,22 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import socket.ServerAsyncTask;
+import aybars.arslan.menudroid_server.socket.JsonSocketServer;
 
 /**
  * This is a IntentService , it will be running in background , every time was listen to request from client device.
  */
-public class MyService extends IntentService {
+public class MyServiceJunk extends IntentService {
     private final int SERVER_PORT = 8080; //Define the server port
     private static Timer timer;
     private boolean isPaused = true;
     private SQLiteDatabase dbGlobal;
     private Cursor cursorSearch;
     private Context c=this;
-    public MyService() {
+    public MyServiceJunk() {
         super("MyService");
     }
 
@@ -42,35 +39,22 @@ public class MyService extends IntentService {
 
     private void startService() {
         int delay = 100;
-        int period = 500;
+        int period = 5000;
         final Context ctx = this;
         timer = new Timer();
-        Log.d("SERVICE", "time");
         /*This is a thread that works every 1/2 second you can adjust the time with the variable called period ,
         evey 1000 is equal to 1 second*/
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 if (isPaused == true) {
                     /*This is your server socket code */
-                    try {
-                        //Create a server socket object and bind it to a port
-                        ServerSocket socServer = new ServerSocket(SERVER_PORT);
-                        //Create server side client socket reference
-                        Socket socClient = null;
                         //Infinite loop will listen for client requests to connect
                         while (true) {
                             Log.d("SERVICE", "running");
-                            //Accept the client connection and hand over communication to server side client socket
-                            socClient = socServer.accept();
-                            //For each client new instance of AsyncTask will be created
-                            ServerAsyncTask serverAsyncTask = new ServerAsyncTask(c);
-                            //Start the AsyncTask execution
-                            //Accepted client socket object will pass as the parameter
-                            serverAsyncTask.execute(new Socket[] {socClient}); //call the asynctask "serverasynctask"
+                            JsonSocketServer socketServerThread = new JsonSocketServer();
+                            socketServerThread.start();
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
                 }
             }
         }, delay, period);

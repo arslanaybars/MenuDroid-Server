@@ -1,4 +1,4 @@
-package socket;
+package aybars.arslan.menudroid_server.socket;
 
 import android.util.Log;
 

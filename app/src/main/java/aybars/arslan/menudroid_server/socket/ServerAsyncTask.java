@@ -1,4 +1,4 @@
-package socket;
+package aybars.arslan.menudroid_server.socket;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import aybars.arslan.menudroid_server.SqlOperations;
+import aybars.arslan.menudroid_server.db.SqlOperations;
 
 /**
  * AsyncTask which handles the commiunication with clients

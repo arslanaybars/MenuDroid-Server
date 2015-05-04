@@ -28,7 +28,7 @@
 
         <!-- This is the Intent Service -->
         <service
-            android:name="services.MyService"
+            android:name=".services.MyService"
             android:exported="false" />
 
 
