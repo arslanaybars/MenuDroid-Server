@@ -50,6 +50,21 @@ public class SqlOperations {
         sqliteconnection.close(); //close db
     }
 
+    public String getSpecificTableStatus(int number) {
+        Cursor cursor;
+        String status="";
+        String select = "SELECT kind_of_request FROM Restaurant where number_table="+number+" order by _id desc limit 1";
+        cursor = database.rawQuery(select, null);
+        if (cursor.getCount() == 0) // if there are no elements do nothing
+        {
+            Log.d(TAG, "no elements");
+        } else {
+            cursor.moveToNext();
+            status=cursor.getString(0);
+        }
+        if(cursor!=null) cursor.close();
+        return status;
+    }
     public  ArrayList<HashMap<String,String>>  getTableStatus (){
 
         Cursor cursor;
@@ -162,9 +177,54 @@ public class SqlOperations {
             row.put(KEY_TOTAL,totalByFood);
             database.insert(SqliteConnection.TABLE_NAME_ORDER, null, row); //insert in DB the request
         }
+    }
 
 
+    public  ArrayList<HashMap<String,String>>  getOrder(int number){
 
+        Cursor cursor;
+        ArrayList<HashMap<String, String>> allElementsDictionary = new ArrayList<HashMap<String, String>>();
+        String select = "SELECT quantity,price,food_name,total,number_table from OrderClient where number_table="+number+"";
+        cursor = database.rawQuery(select,null);
+        if(cursor.getCount()==0) // if there are no elements do nothing
+        {
+            Log.d(TAG,"no elements");
+        }
+        else
+        { //if there are elemnts
+            Log.d(TAG,"there are elemnets");
+            //get all the rows and pass the data to allElements dictionary.
+            float totalByOrder=0;
+            while(cursor.moveToNext()){
+                int qty=Integer.parseInt(cursor.getString(0));
+
+                if(qty>0){
+                    float totalByFood=Float.parseFloat(cursor.getString(3));// qty * price
+                    totalByOrder+=totalByFood;
+                    HashMap<String, String> map = new HashMap<String, String>();
+
+                    map.put(KEY_QTY, cursor.getString(0));
+                    map.put(KEY_PRICE, cursor.getString(1));
+                    map.put(KEY_FOOD_NAME, cursor.getString(2));
+                    map.put("totalByFood", cursor.getString(3));
+                    allElementsDictionary.add(map);
+                    if (LogDebug) {
+                        Log.d(TAG, "qty : " + cursor.getString(0) +
+                                        "\n price :" + cursor.getString(1)+
+                                        "\n foodname :" + cursor.getString(2)+
+                                        "\n totalByFood :"+ cursor.getString(3)+
+                                        "\n table :"+ cursor.getString(4)
+                        );
+                    }
+                }
+                Log.d(TAG,"total is :"+totalByOrder);
+            }
+        }
+        if (cursor!=null)
+        {
+            cursor.close();//It is important close the cursor when you finish your process.
+        }
+        return allElementsDictionary;
     }
 
 

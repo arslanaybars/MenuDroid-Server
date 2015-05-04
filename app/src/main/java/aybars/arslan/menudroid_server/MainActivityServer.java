@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -52,11 +53,29 @@ public class MainActivityServer extends ActionBarActivity {
         tvIP = (TextView) findViewById(R.id.tvIP);
         getDeviceIpAddress(); //Ipaddress method.
         doLoopProcess();
-
-
     }
 
 
+    public void tableClick(View v){
+        String IdAsString = v.getResources().getResourceName(v.getId()); //this return namepackage: id /btn1 or btn2 , etc
+        //this is to get "btn1" , "btn5" depending from the View selected.
+        String idString[]=IdAsString.split("/");
+        Log.d("idString",IdAsString);
+        Log.d("idString",idString[1]);
+        int tableNumber=Integer.parseInt(idString[1].substring(3));
+        Log.d("Table","table # "+tableNumber);//get tables number
+        //get color status
+        SqlOperations sqliteoperation2 = new SqlOperations(getApplicationContext());
+        sqliteoperation2.open();
+        String status=sqliteoperation2.getSpecificTableStatus(tableNumber);
+        Log.d("status","status is "+status);//get tables number
+        sqliteoperation2.close();
+        if(status.equals("O")){
+            Intent intentOrder = new Intent(MainActivityServer.this, OrderDetailsActivity.class);
+            intentOrder.putExtra("number", String.valueOf(tableNumber));
+            startActivity(intentOrder);
+        }
+    }
 
 
     /**
@@ -175,6 +194,15 @@ public class MainActivityServer extends ActionBarActivity {
                 break;
             case 6:
                 btnChooseTable = (Button) findViewById(R.id.btn6);
+                break;
+            case 7:
+                btnChooseTable = (Button) findViewById(R.id.btn7);
+                break;
+            case 8:
+                btnChooseTable = (Button) findViewById(R.id.btn8);
+                break;
+            case 9:
+                btnChooseTable = (Button) findViewById(R.id.btn9);
                 break;
 
         }
