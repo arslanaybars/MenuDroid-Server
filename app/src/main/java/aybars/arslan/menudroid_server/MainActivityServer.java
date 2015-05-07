@@ -57,11 +57,12 @@ public class MainActivityServer extends ActionBarActivity {
 
 
     public void tableClick(View v){
-        String IdAsString = v.getResources().getResourceName(v.getId()); //this return namepackage: id /btn1 or btn2 , etc
+        String IdAsString = v.getResources().getResourceName(v.getId());
+        //this return namepackage: id /btn1 or btn2 , etc
         //this is to get "btn1" , "btn5" depending from the View selected.
         String idString[]=IdAsString.split("/");
         Log.d("idString",IdAsString);
-        Log.d("idString",idString[1]);
+        Log.d("idString[1]",idString[1]); //btn?
         int tableNumber=Integer.parseInt(idString[1].substring(3));
         Log.d("Table","table # "+tableNumber);//get tables number
         //get color status
@@ -70,13 +71,147 @@ public class MainActivityServer extends ActionBarActivity {
         String status=sqliteoperation2.getSpecificTableStatus(tableNumber);
         Log.d("status","status is "+status);//get tables number
         sqliteoperation2.close();
+
         if(status.equals("O")){
-            Intent intentOrder = new Intent(MainActivityServer.this, OrderDetailsActivity.class);
-            intentOrder.putExtra("number", String.valueOf(tableNumber));
-            startActivity(intentOrder);
+//            Intent intentOrder = new Intent(MainActivityServer.this, OrderDetailsActivity.class);
+//            intentOrder.putExtra("number", String.valueOf(tableNumber));
+//            startActivity(intentOrder);
+
+            showOrder(String.valueOf(tableNumber));
+        } else if (status.equals("W")) {
+            showWaiter(tableNumber);
+        } else if (status.equals("B")) {
+            showBill(tableNumber);
+        } else if (status.equals("L")) {
+            showLogined(tableNumber);
+        } else {
+
         }
     }
 
+    private void showOrder(String number) {
+        //TODO
+        //add delivered button after click delivered the button rechange the table color
+
+        sqliteoperation= new SqlOperations(getApplicationContext());
+        sqliteoperation.open();
+        ArrayList<HashMap<String, String>> dictionary =sqliteoperation.getOrder(Integer.parseInt(number));
+        sqliteoperation.close();
+
+        String totalbyFood,quantity,food_name,messageOrder,price;
+        messageOrder="\nOrder\nYour ordered";
+        float totalbyOrder=0;
+        int j;
+        for (int i = 0; i < dictionary.size(); i++) {
+
+            j=i+1;
+            /*I start at index 0 and finish at the penultimate index */
+            HashMap<String, String> map = dictionary.get(i); //Get the corresponding map from the index
+            totalbyFood=map.get("totalByFood").toString();
+            price=map.get("price").toString();
+            quantity=map.get("quantity").toString();
+            food_name=map.get("food_name").toString();
+            messageOrder+="\n "+j+" - "+food_name+" ("+price+" $  x  "+ quantity +")  "+ totalbyFood+"$";
+            totalbyOrder+=Float.parseFloat(totalbyFood);
+        }
+        messageOrder+="\n Total = "+totalbyOrder+"$";
+
+        AlertDialogWrapper.Builder dialogBuilder = new AlertDialogWrapper.Builder(this);
+        dialogBuilder.setMessage(messageOrder);//R.string.main_order_message)
+        dialogBuilder.setTitle("Details");
+
+        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialogBuilder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Scan Barcode
+                // clean
+               // ChangeColorTable(btnTable, "L");
+            }
+        });
+        dialogBuilder.create().show();
+    }
+
+    private void showWaiter(final int number) {
+        AlertDialogWrapper.Builder dialogBuilder = new AlertDialogWrapper.Builder(this);
+        dialogBuilder.setMessage("message");
+        dialogBuilder.setTitle("Title");
+
+        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialogBuilder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // After called waiter rechange table
+                // but still table have some people so showed logined color
+                btnTable = chooseTable(number);
+                btnTable.setBackgroundResource(R.drawable.main_custom_button_logined);
+            }
+        });
+
+        dialogBuilder.create().show();
+    }
+
+    private void showBill(final int number) {
+        AlertDialogWrapper.Builder dialogBuilder = new AlertDialogWrapper.Builder(this);
+        dialogBuilder.setMessage("Accept = finish session");
+        dialogBuilder.setTitle("Finish session");
+
+        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialogBuilder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // after payment recolor
+                // TODO after payment also finish the session
+                btnTable = chooseTable(number);
+                btnTable.setBackgroundResource(R.drawable.main_custom_button_logined);
+            }
+        });
+
+        dialogBuilder.create().show();
+    }
+
+    private void showLogined(final int number) {
+        AlertDialogWrapper.Builder dialogBuilder = new AlertDialogWrapper.Builder(this);
+        dialogBuilder.setMessage("message");
+        dialogBuilder.setTitle("Title");
+
+        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialogBuilder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // After called waiter rechange table
+                // but still table have some people so showed logined color
+                btnTable = chooseTable(number);
+                btnTable.setBackgroundResource(R.drawable.main_custom_button_logined);
+            }
+        });
+
+        dialogBuilder.create().show();
+    }
 
     /**
      * Get ip address of the device
@@ -171,7 +306,6 @@ public class MainActivityServer extends ActionBarActivity {
         }, delay, period);
     }
 
-
     public Button chooseTable(int number) {
         Button btnChooseTable = (Button) findViewById(R.id.btn1);
         // GET the value from number_table key form the actual Map. (this map has "key"-"value
@@ -221,14 +355,13 @@ public class MainActivityServer extends ActionBarActivity {
                                                 /*W  waiter = the  color change to green  */
             tableColor.setBackgroundResource(R.drawable.main_custom_button_green);
         } else if (capitalLetter.equals("L")) {
-                                                /*L  login = the  color no change  */
-            tableColor.setBackgroundResource(R.drawable.main_custom_button);
+                                                /*L  login = the  color logined  */
+            tableColor.setBackgroundResource(R.drawable.main_custom_button_logined);
             showInstantLogin();
         } else {
             // If the result is diferrent to B,O,W , the color change to brown
             // TODO I think we dont need to brown button if the table non use so its red -RIGHT
             tableColor.setBackgroundResource(R.drawable.main_custom_button);
-
         }
     }
 

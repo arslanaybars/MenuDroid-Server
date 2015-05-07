@@ -12,6 +12,8 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import aybars.arslan.menudroid_server.db.SqlOperations;
+
 
 public class OrderDetailsActivity extends ActionBarActivity {
     private SqlOperations sqliteoperation;
