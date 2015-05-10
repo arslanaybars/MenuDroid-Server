@@ -34,6 +34,8 @@ public class MainActivityServer extends ActionBarActivity {
     private static final String KEY_NUMBER_TABLE = "number_table";
     private static final String KEY_KIND_REQUEST = "kind_of_request";
     private static final String KEY_REQUEST_TEXT = "request_text";
+    private static final String KEY_CONFIRM_SESSION = "confirmSession";
+    private static final String KEY_SHOW = "show";
     static String TABLE_NAME = "Table Name";
     private Button btnTable;
     private TextView tvIP;
@@ -281,13 +283,16 @@ public class MainActivityServer extends ActionBarActivity {
                                             HashMap<String, String> map = dictionary.get(i); //Get the corresponding map from the index
                                             Log.d("DictionaryMAinActivity", map.get(KEY_NUMBER_TABLE) + " --- " +
                                                     map.get(KEY_KIND_REQUEST) + "------" +
-                                                    map.get(KEY_REQUEST_TEXT)); /*this is a simple log XD, to verify if there is information.*/
+                                                    map.get(KEY_REQUEST_TEXT) + "------" +
+                                                    map.get(KEY_CONFIRM_SESSION) + "------" +
+                                                    map.get(KEY_SHOW)); /*this is a simple log XD, to verify if there is information.*/
                                             TABLE_NAME = map.get(KEY_REQUEST_TEXT);
 
 
                                             btnTable = chooseTable(Integer.parseInt(map.get(KEY_NUMBER_TABLE).toString()));
                                             //get the capital letter from each Map,
-                                            ChangeColorTable(btnTable, map.get(KEY_KIND_REQUEST).toString().toUpperCase());
+                                            ChangeColorTable(btnTable, map.get(KEY_KIND_REQUEST).toString().toUpperCase(),
+                                                    Integer.parseInt(map.get(KEY_CONFIRM_SESSION).toString()),Integer.parseInt(map.get(KEY_SHOW).toString()),Integer.parseInt(map.get(KEY_NUMBER_TABLE).toString()));
                                         }
                                     }
                                 });
@@ -343,7 +348,7 @@ public class MainActivityServer extends ActionBarActivity {
         return btnChooseTable;
     }
 
-    public void ChangeColorTable(Button tableColor, String capitalLetter) {
+    public void ChangeColorTable(Button tableColor, String capitalLetter,int session,int show,int numbertable) {
         if (capitalLetter.equals("B")) {
                                                 /*B- bill = the  color change to yellow*/
             tableColor.setBackgroundResource(R.drawable.main_custom_button_yellow);
@@ -357,7 +362,17 @@ public class MainActivityServer extends ActionBarActivity {
         } else if (capitalLetter.equals("L")) {
                                                 /*L  login = the  color logined  */
             tableColor.setBackgroundResource(R.drawable.main_custom_button_logined);
-            showInstantLogin();
+            if(session==0 && show==1){
+                ///update show to cero
+                SqlOperations sqliteoperationShow = new SqlOperations(getApplicationContext());
+                sqliteoperationShow.open();
+                sqliteoperationShow.updatevalueShow(numbertable);
+                sqliteoperationShow.close();
+
+                showInstantLogin(numbertable);
+               //when you accept de dialog update session to 1
+            }
+
         } else {
             // If the result is diferrent to B,O,W , the color change to brown
             // TODO I think we dont need to brown button if the table non use so its red -RIGHT
@@ -365,7 +380,7 @@ public class MainActivityServer extends ActionBarActivity {
         }
     }
 
-    private void showInstantLogin() {
+    private void showInstantLogin(final int numbertable) {
         AlertDialogWrapper.Builder dialogBuilder = new AlertDialogWrapper.Builder(this);
         dialogBuilder.setTitle("test");
         dialogBuilder.setMessage( TABLE_NAME + " is logined");
@@ -380,6 +395,11 @@ public class MainActivityServer extends ActionBarActivity {
         dialogBuilder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                SqlOperations sqliteoperationConfirm = new SqlOperations(getApplicationContext());
+                sqliteoperationConfirm .open();
+                sqliteoperationConfirm .updatevalueConfirm(numbertable);
+                sqliteoperationConfirm .close();
                 dialog.dismiss();
             }
         });

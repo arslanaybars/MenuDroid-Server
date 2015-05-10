@@ -18,7 +18,7 @@ public class SqliteConnection  extends SQLiteOpenHelper {
 
     String sqlCreateTableOrder= "CREATE TABLE OrderClient (_id INTEGER PRIMARY KEY, number_table INTEGER, quantity INTEGER, price TEXT, total TEXT, food_name TEXT)";
 
-    String sqlCreateTableRestaurant= "CREATE TABLE Restaurant (_id INTEGER PRIMARY KEY, number_table INTEGER, kind_of_request INTEGER, request_text TEXT)";
+    String sqlCreateTableRestaurant= "CREATE TABLE Restaurant (_id INTEGER PRIMARY KEY, number_table INTEGER, kind_of_request INTEGER, request_text TEXT, confirmSession INTEGER, show INTEGER)";
 
     /*Add new tables :
     * Categories
