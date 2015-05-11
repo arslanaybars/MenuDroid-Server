@@ -29,6 +29,8 @@ public class SqlOperations {
     private static final String KEY_NUMBER_TABLE = "number_table";
     private static final String KEY_KIND_REQUEST = "kind_of_request";
    private static final String KEY_REQUEST_TEXT = "request_text";
+    private static final String KEY_CONFIRM_SESSION = "confirmSession";
+    private static final String KEY_SHOW = "show";
 
 
 
@@ -65,11 +67,27 @@ public class SqlOperations {
         if(cursor!=null) cursor.close();
         return status;
     }
+
+
+    public void updatevalueShow(int numbertable){
+        /*This method is to doesnt show the Login Dialog*/
+        ContentValues row = new ContentValues();
+        row.put(KEY_SHOW,0);
+        database.update(SqliteConnection.TABLE_NAME, row, "number_table "+"="+numbertable, null);
+    }
+
+    public void updatevalueConfirm(int numbertable){
+        /*This method is to know if the session was confirmed*/
+        ContentValues row = new ContentValues();
+        row.put(KEY_CONFIRM_SESSION,1);
+        database.update(SqliteConnection.TABLE_NAME, row, "number_table "+"="+numbertable, null);
+    }
+
     public  ArrayList<HashMap<String,String>>  getTableStatus (){
 
         Cursor cursor;
         ArrayList<HashMap<String, String>> allElementsDictionary = new ArrayList<HashMap<String, String>>();
-        String select = "SELECT distinct(number_table) ,kind_of_request,request_text FROM Restaurant group by number_table order by _id desc";
+        String select = "SELECT distinct(number_table) ,kind_of_request,request_text,confirmSession,show FROM Restaurant group by number_table order by _id desc";
         /*The  rawQuery do a query that we write before (select ... from restaurant ...)*/
         cursor = database.rawQuery(select,null);
         if(cursor.getCount()==0) // if there are no elements do nothing
@@ -109,12 +127,16 @@ public class SqlOperations {
                     map.put(KEY_NUMBER_TABLE, cursor.getString(0));
                     map.put(KEY_KIND_REQUEST, cursor.getString(1));
                     map.put(KEY_REQUEST_TEXT, cursor.getString(2));
+                    map.put(KEY_CONFIRM_SESSION, cursor.getString(3));
+                    map.put(KEY_SHOW, cursor.getString(4));
                     allElementsDictionary.add(map);
 
                     if (LogDebug) {
                         Log.d(TAG, "number : " + cursor.getString(0) +
                                         "\n kind :" + cursor.getString(1)+
-                                        "\n text :" + cursor.getString(2)
+                                        "\n text :" + cursor.getString(2)+
+                                        "\n confirmSession :" + cursor.getString(3)+
+                                        "\n show :" + cursor.getString(4)
                         );
                     }
 
@@ -150,6 +172,8 @@ public class SqlOperations {
        row.put(KEY_NUMBER_TABLE, number);
        row.put(KEY_KIND_REQUEST, kind_request);
        row.put(KEY_REQUEST_TEXT, request);
+       row.put(KEY_CONFIRM_SESSION, 0);
+       row.put(KEY_SHOW, 1);
        database.insert(SqliteConnection.TABLE_NAME, null, row); //insert in DB the request
 
        Log.d("REQUEST","Kind is : "+kind_request+
