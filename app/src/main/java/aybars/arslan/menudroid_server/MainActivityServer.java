@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -27,6 +28,8 @@ import aybars.arslan.menudroid_server.db.SqlOperations;
 import aybars.arslan.menudroid_server.services.MyService;
 
 
+
+
 public class MainActivityServer extends ActionBarActivity {
     private static Timer timer2;
     private boolean isPaused = true;
@@ -40,21 +43,30 @@ public class MainActivityServer extends ActionBarActivity {
     private Button btnTable;
     private TextView tvIP;
 
+    private Handler handler = new Handler();
+
+    private SqlOperations sqliteoperationShow,sqliteoperation2 ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
-
         Log.d("SERVICE", "nani");
         startService(new Intent(MainActivityServer.this, MyService.class)); //this line enabled the Intent service.
-
         sqliteoperation = new SqlOperations(getApplicationContext());
         sqliteoperation.open();
         tvIP = (TextView) findViewById(R.id.tvIP);
         getDeviceIpAddress(); //Ipaddress method.
-        doLoopProcess();
+
+    }
+
+    @Override
+    public void onResume() {
+        Log.i("Activity", "onResume()");
+        handler.postDelayed(runnable, 1000);
+        super.onResume();
+
     }
 
 
@@ -68,7 +80,7 @@ public class MainActivityServer extends ActionBarActivity {
         int tableNumber=Integer.parseInt(idString[1].substring(3));
         Log.d("Table","table # "+tableNumber);//get tables number
         //get color status
-        SqlOperations sqliteoperation2 = new SqlOperations(getApplicationContext());
+         sqliteoperation2 = new SqlOperations(getApplicationContext());
         sqliteoperation2.open();
         String status=sqliteoperation2.getSpecificTableStatus(tableNumber);
         Log.d("status","status is "+status);//get tables number
@@ -239,7 +251,67 @@ public class MainActivityServer extends ActionBarActivity {
         }
     }
 
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+      /* do what you need to do */
+           try{
+               doLoopProcess2();
+           }catch(Exception e)
+           {
+               Log.d("Exception", ""+e.toString());
+           }
+
+      /* and here comes the "trick" */
+            handler.postDelayed(this, 10000);
+        }
+    };
+
+
+
+    @Override
+    public void onPause() {
+         Log.i("Activity", "onPause()");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        handler.removeCallbacks(runnable);
+        Log.i("Activity", "onStop()");
+        super.onStop();
+    }
+
+    public void doLoopProcess2() {
+
+        final ArrayList<HashMap<String, String>> dictionary = sqliteoperation.getTableStatus();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < dictionary.size(); i++) {
+                                            /*I start at index 0 and finish at the penultimate index */
+                    HashMap<String, String> map = dictionary.get(i); //Get the corresponding map from the index
+                    Log.d("DictionaryMAinActivity", map.get(KEY_NUMBER_TABLE) + " --- " +
+                            map.get(KEY_KIND_REQUEST) + "------" +
+                            map.get(KEY_REQUEST_TEXT) + "------" +
+                            map.get(KEY_CONFIRM_SESSION) + "------" +
+                            map.get(KEY_SHOW)); /*this is a simple log XD, to verify if there is information.*/
+                    TABLE_NAME = map.get(KEY_REQUEST_TEXT);
+
+
+                    btnTable = chooseTable(Integer.parseInt(map.get(KEY_NUMBER_TABLE).toString()));
+                    //get the capital letter from each Map,
+                    ChangeColorTable(btnTable, map.get(KEY_KIND_REQUEST).toString().toUpperCase(),
+                            Integer.parseInt(map.get(KEY_CONFIRM_SESSION).toString()), Integer.parseInt(map.get(KEY_SHOW).toString()), Integer.parseInt(map.get(KEY_NUMBER_TABLE).toString()));
+                }
+            }
+        });
+    }
+
     public void doLoopProcess() {
+
+
+
         //Timer with a thread inside to search the status of each table.
         int delay = 100; //is the delay or sleep between every timer loop.
         int period = 10000;//ten seconds
@@ -364,7 +436,7 @@ public class MainActivityServer extends ActionBarActivity {
             tableColor.setBackgroundResource(R.drawable.main_custom_button_logined);
             if(session==0 && show==1){
                 ///update show to cero
-                SqlOperations sqliteoperationShow = new SqlOperations(getApplicationContext());
+                sqliteoperationShow = new SqlOperations(getApplicationContext());
                 sqliteoperationShow.open();
                 sqliteoperationShow.updatevalueShow(numbertable);
                 sqliteoperationShow.close();
@@ -409,7 +481,11 @@ public class MainActivityServer extends ActionBarActivity {
 
     @Override
     protected void onDestroy() {
-        sqliteoperation.close();
+        Log.i("Activity", "onStop()");
+        handler.removeCallbacks(runnable);
+        if(sqliteoperation!=null)  sqliteoperation.close();
+       if(sqliteoperation2!=null) sqliteoperation2.close();
+        if(sqliteoperationShow!=null)  sqliteoperationShow.close();
         super.onDestroy();
     }
 

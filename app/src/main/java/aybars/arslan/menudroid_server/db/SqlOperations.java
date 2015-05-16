@@ -45,10 +45,15 @@ public class SqlOperations {
     }
 
     public void open() throws SQLException {
+
+
+
         database = sqliteconnection.getWritableDatabase(); // avaliable to write in the db.
     }
 
     public void close() {
+        if(database!=null){ database.close();}
+
         sqliteconnection.close(); //close db
     }
 
@@ -65,6 +70,7 @@ public class SqlOperations {
             status=cursor.getString(0);
         }
         if(cursor!=null) cursor.close();
+
         return status;
     }
 
@@ -146,6 +152,7 @@ public class SqlOperations {
         {
             cursor.close();//It is important close the cursor when you finish your process.
         }
+
 
         return allElementsDictionary;
     }
