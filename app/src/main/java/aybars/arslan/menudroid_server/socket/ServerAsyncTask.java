@@ -47,16 +47,6 @@ public class ServerAsyncTask extends AsyncTask<Socket, Void, JSONObject> {
                 //Write data to the data output stream
                 out.println("Connection Accepted");
 
-
-                //Buffer the data input stream
-              //  BufferedReader br = new BufferedReader(
-                //        new InputStreamReader(is));
-                //Read the contents of the data buffer
-               // result = br.readLine();
-           // result="hola";
-                Log.d(TAG,"hola");
-
-
                 dataInputStream = new DataInputStream(
                         mySocket.getInputStream());
                 dataOutputStream = new DataOutputStream(
@@ -68,11 +58,11 @@ public class ServerAsyncTask extends AsyncTask<Socket, Void, JSONObject> {
                 //If no message sent from client, this code will block the program
                 messageFromClient = dataInputStream.readUTF();
                 jsondata = new JSONObject(messageFromClient);
-                messageToClient = "Connection Accepted";
-                dataOutputStream.writeUTF(messageToClient);
+              //  messageToClient = "Connection Accepted";
+              //  dataOutputStream.writeUTF(messageToClient);
 
                 String message = jsondata.getString("request");
-                Log.d(TAG,""+message);
+             //   Log.d(TAG,""+message);
 
 
                 //Close the client connection
@@ -104,7 +94,7 @@ public class ServerAsyncTask extends AsyncTask<Socket, Void, JSONObject> {
                         result=request+message;
 
                         JSONArray OrderArray = jsondata.getJSONArray("messageArray");
-                        if(OrderArray!=null) { //only save if the order have information
+                        if(OrderArray!=null) { //only save if the order has information
                             saveStatusTable(result);
                             //now save the customer order.
                             int last = result.lastIndexOf("Table") + 5;
@@ -121,7 +111,6 @@ public class ServerAsyncTask extends AsyncTask<Socket, Void, JSONObject> {
                         Log.d(TAG, "you send "+request + " "+message);
                         result=request+message;
                         saveStatusTable(result);
-
                     }else{
                         Log.d(TAG, "you send other thing");
 

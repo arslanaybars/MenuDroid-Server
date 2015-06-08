@@ -174,7 +174,7 @@ public class SqlOperations {
        int last=request.lastIndexOf("Table")+5;
        Log.d("LAST", ""+last);
        String number=request.substring(last);
-       Log.d("LAST", ""+number);
+       Log.d("LAST", "" + number);
        ContentValues row = new ContentValues();
        row.put(KEY_NUMBER_TABLE, number);
        row.put(KEY_KIND_REQUEST, kind_request);
@@ -187,7 +187,17 @@ public class SqlOperations {
        "request : "+ request+
        "number : "+number);
 
+       //if kind requet  is L reset the tables order
+       if(kind_request.equals("L")){
+            setEmptyTableOrder(Integer.parseInt(number));
+       }
+
    }
+
+    public void setEmptyTableOrder(int numberTable){
+            database.delete("OrderClient", "number_table="+numberTable, null);
+    }
+
     public void insertOrder(JSONArray order,String numberTable) throws JSONException {
 
         for (int i = 0; i < order.length(); i++) { //Search inner the Categories array

@@ -52,7 +52,7 @@ public class MainActivityServer extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
-        Log.d("SERVICE", "nani");
+        Log.d("SERVICE", "starting service");
         startService(new Intent(MainActivityServer.this, MyService.class)); //this line enabled the Intent service.
         sqliteoperation = new SqlOperations(getApplicationContext());
         sqliteoperation.open();
