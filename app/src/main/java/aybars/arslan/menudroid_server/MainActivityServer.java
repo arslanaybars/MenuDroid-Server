@@ -90,13 +90,16 @@ public class MainActivityServer extends ActionBarActivity {
 //            Intent intentOrder = new Intent(MainActivityServer.this, OrderDetailsActivity.class);
 //            intentOrder.putExtra("number", String.valueOf(tableNumber));
 //            startActivity(intentOrder);
-
+//            ChangeColorTable(btnTable, "W", 0, 1, tableNumber);
             showOrder(String.valueOf(tableNumber));
         } else if (status.equals("W")) {
+//            ChangeColorTable(btnTable, "W", 0, 1, tableNumber);
             showWaiter(tableNumber);
         } else if (status.equals("B")) {
+//            ChangeColorTable(btnTable, "B", 0, 1, tableNumber);
             showBill(tableNumber);
         } else if (status.equals("L")) {
+//            ChangeColorTable(btnTable, "L", 0, 1, tableNumber);
             showLogined(tableNumber);
         } else {
 
@@ -110,7 +113,7 @@ public class MainActivityServer extends ActionBarActivity {
         sqliteoperation= new SqlOperations(getApplicationContext());
         sqliteoperation.open();
         ArrayList<HashMap<String, String>> dictionary =sqliteoperation.getOrder(Integer.parseInt(number));
-        sqliteoperation.close();
+//        sqliteoperation.close();
 
         String totalbyFood,quantity,food_name,messageOrder,price;
         messageOrder="\nOrder\nYour ordered";
@@ -154,8 +157,8 @@ public class MainActivityServer extends ActionBarActivity {
 
     private void showWaiter(final int number) {
         AlertDialogWrapper.Builder dialogBuilder = new AlertDialogWrapper.Builder(this);
-        dialogBuilder.setMessage("message");
-        dialogBuilder.setTitle("Title");
+        dialogBuilder.setMessage("Are you sure to call waiter");
+        dialogBuilder.setTitle("Call Waiter");
 
         dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -179,7 +182,7 @@ public class MainActivityServer extends ActionBarActivity {
 
     private void showBill(final int number) {
         AlertDialogWrapper.Builder dialogBuilder = new AlertDialogWrapper.Builder(this);
-        dialogBuilder.setMessage("Accept = finish session");
+        dialogBuilder.setMessage("Bill paid");
         dialogBuilder.setTitle("Finish session");
 
         dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

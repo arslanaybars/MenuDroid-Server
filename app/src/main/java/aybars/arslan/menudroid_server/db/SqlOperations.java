@@ -187,16 +187,16 @@ public class SqlOperations {
        "request : "+ request+
        "number : "+number);
 
-       //if kind requet  is L reset the tables order
-       if(kind_request.equals("L")){
-            setEmptyTableOrder(Integer.parseInt(number));
-       }
+//       //if kind requet  is L reset the tables order
+//       if(kind_request.equals("L")){
+//            setEmptyTableOrder(Integer.parseInt(number));
+//       }
 
    }
 
-    public void setEmptyTableOrder(int numberTable){
-            database.delete("OrderClient", "number_table="+numberTable, null);
-    }
+//    public void setEmptyTableOrder(int numberTable){
+//            database.delete("OrderClient", "number_table="+numberTable, null);
+//    }
 
     public void insertOrder(JSONArray order,String numberTable) throws JSONException {
 
